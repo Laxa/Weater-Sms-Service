@@ -1,8 +1,8 @@
 <?php
 
 define('ENDPOINT', 'http://api.openweathermap.org/data/2.5/forecast');
-$cityId = trim(file_get_contents('paris'));
-$APIKey = trim(file_get_contents('apikey'));
+$cityId = trim(file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'paris'));
+$APIKey = trim(file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'apikey'));
 
 // Forging API call URL
 $url = sprintf('%s?id=%s&APPID=%s&units=metric', ENDPOINT, $cityId, $APIKey);
