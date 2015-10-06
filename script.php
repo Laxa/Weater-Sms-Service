@@ -43,6 +43,8 @@ if ($iteration === 0)
 }
 $averageTemp /= $iteration;
 $averageWind /= $iteration;
+// Wind is meter/s, we want km/h
+$averageWind *= (float)3.6;
 $averageClouds /= $iteration;
 
 $sms = sprintf('LT: %.2f, HT: %.2f, AT: %.2f, R: %.2f, AC: %.2f, AW: %.2f', $lowestTemp, $highestTemp, $averageTemp, $Rain, $averageClouds, $averageWind);
