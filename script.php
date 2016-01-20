@@ -15,7 +15,7 @@ $averageTemp = (float)0;
 $averageWind = (float)0;
 $Rain = (float)0;
 $averageClouds = (float)0;
-$averageSnow = (float)0;
+$Snow = (float)0;
 // We use data only for today's day
 $today = date('d');
 $iteration = 0;
@@ -31,6 +31,8 @@ foreach ($jsonData['list'] as $data)
         $averageWind += $data['wind']['speed'];
         if (isset($data['rain']['3h']))
             $Rain += $data['rain']['3h'];
+        if (isset($data['snow']['3h']))
+            $Snow += $data['snow']['3h'];
         $averageClouds += $data['clouds']['all'];
     }
     else break;
@@ -47,5 +49,8 @@ $averageWind /= $iteration;
 $averageWind *= (float)3.6;
 $averageClouds /= $iteration;
 
-$sms = sprintf('LT: %.2f, HT: %.2f, AT: %.2f, R: %.2f, AC: %.2f, AW: %.2f', $lowestTemp, $highestTemp, $averageTemp, $Rain, $averageClouds, $averageWind);
+if ($Snow > 0)
+    $sms = sprintf('LT: %.2f, HT: %.2f, AT: %.2f, R: %.2f, S: %.2f, AC: %.2f, AW: %.2f', $lowestTemp, $highestTemp, $averageTemp, $Rain, $Snow, $averageClouds, $averageWind);
+else
+    $sms = sprintf('LT: %.2f, HT: %.2f, AT: %.2f, R: %.2f, AC: %.2f, AW: %.2f', $lowestTemp, $highestTemp, $averageTemp, $Rain, $averageClouds, $averageWind);
 `sms $sms`;
