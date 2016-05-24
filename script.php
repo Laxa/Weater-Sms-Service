@@ -1,5 +1,22 @@
 <?php
 
+function get($url)
+{
+    $ch = curl_init($url);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $httpCode = (int)42;
+    while ($httpCode != 200) // crappy, but that's life bro
+    {
+        if ($httpCode != 42)
+            sleep(60);
+        $res = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    }
+    return $res;
+}
+
 define('ENDPOINT', 'http://api.openweathermap.org/data/2.5/forecast');
 $cityId = trim(file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'paris'));
 $APIKey = trim(file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'apikey'));
@@ -7,7 +24,7 @@ $APIKey = trim(file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'apikey'));
 // Forging API call URL
 $url = sprintf('%s?id=%s&APPID=%s&units=metric', ENDPOINT, $cityId, $APIKey);
 // Calling the API and decoding the return
-$jsonData = json_decode(file_get_contents($url), true);
+$jsonData = json_decode(get($url), true);
 // parsing data to make sms
 $lowestTemp = (float)1000;
 $highestTemp = (float)0;
